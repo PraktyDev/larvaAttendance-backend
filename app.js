@@ -13,12 +13,22 @@ app.use(cookieParser())
 app.use('/api/v1', routers) 
 
 
+//Logout route (Authentication Logout)
+app.post('/logout', (req,res,next)=>{
+    if(!req.user) return res.sendStatus(401)
+    req.logout((err)=>{
+        if(err) return res.sendStatus(400)
+    })
+    next()
+})
 
+//Custom 404
 app.use((req,res) => {
-    res.status(400)
+    res.status(404)
     res.send('404 - Not Found')
 })
 
+//Custom 500
 app.use((err,req,res,next) => {
     console.log(err.message)
     res.status(500)

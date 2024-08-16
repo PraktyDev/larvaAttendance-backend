@@ -3,11 +3,9 @@ import mongoose from "mongoose";
 const adminSchema = mongoose.Schema({
     image: { 
         type: String, 
-        required: true 
     },
     publicId: { 
         type: String,
-        required: true,
     },
     name: {
         type: String,
