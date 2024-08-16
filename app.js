@@ -10,17 +10,8 @@ app.use(express.json())
 app.use(cookieParser())
 
 
-app.use('/api/v1', routers) 
+app.use('/api/v1', routers)
 
-
-//Logout route (Authentication Logout)
-app.post('/logout', (req,res,next)=>{
-    if(!req.user) return res.sendStatus(401)
-    req.logout((err)=>{
-        if(err) return res.sendStatus(400)
-    })
-    next()
-})
 
 //Custom 404
 app.use((req,res) => {
