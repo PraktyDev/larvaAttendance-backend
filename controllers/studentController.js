@@ -15,7 +15,7 @@ export const registerStudent = async (req, res) =>{
 //FETCH ALL STUDENTS
 export const students = async (req, res) =>{
     try {
-        const student = await Student.find().populate('attendance')
+        const student = await Student.find().populate('attendance', 'date status')
         if(student.length === 0){
             return res.status(404).json({ msg: 'No students in the database' })
         }
@@ -29,7 +29,7 @@ export const students = async (req, res) =>{
 export const student = async (req, res) =>{
     try {
         const { id } = req.params
-        const student = await Student.findById(id).populate('attendance')
+        const student = await Student.findById(id).populate('attendance', 'date status')
         if(!student){
             return res.status(404).json({ msg: 'Student not found' })
         }
