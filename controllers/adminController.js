@@ -41,7 +41,7 @@ export const login = async (req, res) =>{
         const accessToken = jwt.sign(
             { userId: admin._id },
             process.env.JWT_ACCESS_SECRET,
-            { subject: 'accessApi', expiresIn: '6h' }
+            { subject: 'accessApi', expiresIn: process.env.TOKEN_EXPIRATION }
         )
 
         res.cookie('accessToken', accessToken, { maxAge: 60000 })

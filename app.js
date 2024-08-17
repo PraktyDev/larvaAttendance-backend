@@ -3,11 +3,17 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import routers from "./routers/index.js";
 import cookieParser from 'cookie-parser';
+import cors from "cors";
 
 const app = express()
 dotenv.config()
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors({
+    origin: process.env.CLIENT_DOMAIN,
+    methods: 'GET, PUT, PATCH, POST, DELETE, HEAD',
+    credentials: true //Allow credentials (cookies, authorization headers)
+}))
 
 
 app.use('/api/v1', routers)
