@@ -44,8 +44,8 @@ export const login = async (req, res) =>{
             { subject: 'accessApi', expiresIn: process.env.TOKEN_EXPIRATION }
         )
         
-        res.cookie('accessToken', accessToken, { maxAge: 60000 })
-        // res.cookie('accessToken', accessToken, { maxAge: 60000, httpOnly: true, secure: true, sameSite: 'strict' })
+        // res.cookie('accessToken', accessToken, { maxAge: 60000 })
+        res.cookie('accessToken', accessToken, { maxAge: 60000, httpOnly: true, secure: true, sameSite: 'strict' })
         return res.status(200).json({
             id: tutor._id,
             name: tutor.name,
