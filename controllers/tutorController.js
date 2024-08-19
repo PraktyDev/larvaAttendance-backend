@@ -81,7 +81,7 @@ export const authStatus = async (req,res)=>{
             return res.status(404).json({ Authenticate: false, msg: "Tutor not found" });
         }
 
-        return res.status(200).json({ Authenticate: true, id: tutor._id, name: tutor.name });
+        return res.status(200).json({ Authenticate: true, id: tutor._id, name: tutor.name, course: tutor.course });
     } catch (error) {
         return res.status(500).json({ msg: "Server Error", error: error.message });
     }
