@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 const attendanceSchema = mongoose.Schema({
     date: { 
-        type: Date, 
-        default: Date.now
+        type: String,
     },
     status: {
         type: String,
@@ -11,7 +10,8 @@ const attendanceSchema = mongoose.Schema({
     },
     student: { 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Student'
+        ref: 'Student',
+        onDelete: 'pull'
     },
 },{ timestamps: true });
 

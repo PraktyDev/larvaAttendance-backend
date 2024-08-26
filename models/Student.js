@@ -27,7 +27,8 @@ const studentSchema = mongoose.Schema({
     },
     attendance: [{ 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Attendance'
+        ref: 'Attendance',
+        onDelete: 'pull'
     }],
 },{ timestamps: true });
 

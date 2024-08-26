@@ -38,16 +38,31 @@ export const attendances = async (req, res) =>{
     }
 }
 
-//FETCH ATTENDANCE BY ID (INDIVIDUAL ATTENDANCE)
+//FETCH ATTENDANCE BY DATE
 export const attendance = async (req, res) =>{
     try {
-        const { id } = req.params
-        const attendance = await Attendance.findById(id).populate('student', 'image name studentNumber course cohort attendance')
+        const { date } = req.params
+        const attendance = await Attendance.find({date}).populate('student', 'image name studentNumber course cohort attendance')
         if(!attendance){
             return res.status(404).json({ msg: 'Attendance not found' })
         }
         return res.status(200).json(attendance)
     } catch (error) {
         return res.status(500).json({ msg: error.message })
+    }
+}
+
+//DELETE STUDENT BY ID
+export const deleteAttendance = async (req, res) =>{
+    try{
+        const { id } = req.params
+        const deletedAttendance = await Attendance.findByIdAndDelete(id)
+        if(!deletedAttendance){
+            return res.status(400).json({ msg: "Attendance not found in database" })
+        }
+        return res.status(200).json({ msg: "Attendance is deleted" })
+    }
+    catch(error){
+        res.status(500).json({ msg: error.message })
     }
 }
