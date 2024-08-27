@@ -35,7 +35,7 @@ export const login = async (req, res) =>{
         }
         const passwordCompare = await bcrypt.compare(password, tutor.password)
         if(!passwordCompare){
-            return res.status(404).json({ msg: 'Invalid credentials' })
+            return res.status(401).json({ msg: 'Invalid credentials' })
         }
 
         const accessToken = jwt.sign(
@@ -45,7 +45,7 @@ export const login = async (req, res) =>{
         )
         
         // res.cookie('accessToken', accessToken, { maxAge: 60000 })
-        res.cookie('accessToken', accessToken, { maxAge: 60000, httpOnly: true, secure: true, sameSite: 'strict' })
+        res.cookie('accessToken', accessToken, { maxAge: 3600000, httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
         return res.status(200).json({
             id: tutor._id,
             name: tutor.name,

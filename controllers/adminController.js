@@ -45,7 +45,7 @@ export const login = async (req, res) =>{
         )
 
         // res.cookie('accessToken', accessToken, { maxAge: 60000 })
-        res.cookie('accessToken', accessToken, { maxAge: 60000, httpOnly: true, secure: true, sameSite: 'strict' })
+        res.cookie('accessToken', accessToken, { maxAge: 3600000, httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
 
         return res.status(200).json({
             id: admin._id,
