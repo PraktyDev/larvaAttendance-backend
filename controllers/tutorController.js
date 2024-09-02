@@ -114,18 +114,49 @@ export const tutor = async (req, res) =>{
     }
 }
 
-//UPDATE TUTOR BY ID
+//UPDATE TUTOR BY ID WITHOUT PASSWORD
 export const updateTutor = async (req, res) =>{
     try {
         const { id } = req.params;
-        const tutor = req.body;
+        const { image, publicId, name, email, course } = req.body
     
-        const updatedTutor = await Tutor.findByIdAndUpdate(id, tutor, { new: true });
+        const updatedTutor = await Tutor.findByIdAndUpdate(id, { image, publicId, name, email, course }, { new: true });
     
         if (!updatedTutor) {
           return res.status(404).json({ msg: 'Tutor not found' });
         }
         res.status(200).json({ msg: "Tutor is updated", updatedTutor });
+      } catch (error) {
+        res.status(500).json({ msg: error.message });
+      }
+}
+
+//UPDATE TUTOR PASSWORD
+export const updatePw = async (req, res) =>{
+    try {
+        const { id } = req.params;
+        const { currentpassword, confirmpassword } = req.body
+        const tutor = await Tutor.findById(id)
+        if(!tutor){
+            return res.status(404).json({ msg: 'Tutor not found' })
+        }
+
+        const passwordCompare = await bcrypt.compare(currentpassword, tutor.password)
+        if(!passwordCompare){
+            return res.status(401).json({ msg: 'Enter correct password' })
+        }
+    
+        if(currentpassword === confirmpassword){
+            return res.status(400).json({ msg: "Current password and new password should not be same" })
+        }
+        const saltRounds = 10;
+        const hashPassword = bcrypt.hashSync(confirmpassword, saltRounds);
+        const updatedTutor = await Tutor.findByIdAndUpdate(id, { password: hashPassword }, { new: true });
+    
+        if (!updatedTutor) {
+          return res.status(404).json({ msg: 'Tutor not found' });
+        }
+        res.status(200).json({ msg: "Tutor password is updated", updatedTutor });
       } catch (error) {
         res.status(500).json({ msg: error.message });
       }
