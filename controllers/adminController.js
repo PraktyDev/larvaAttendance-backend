@@ -45,14 +45,15 @@ export const login = async (req, res) =>{
         )
 
         // res.cookie('accessToken', accessToken, { maxAge: 60000 })
-        res.cookie('accessToken', accessToken, { maxAge: 3600000, httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
-
-        return res.status(200).json({
-            id: admin._id,
-            name: admin.name,
-            email: admin.email,
-            login: true
-        })
+        if (process.env.NODE_ENV === 'production'){
+            res.cookie('accessToken', accessToken, { maxAge: 3600000, httpOnly: true, secure: true, sameSite: 'lax' })
+            return res.status(200).json({
+                id: admin._id,
+                name: admin.name,
+                email: admin.email,
+                login: true
+            })
+        }
     } catch (error) {
         return res.status(500).json({ msg: error.message })
     }
