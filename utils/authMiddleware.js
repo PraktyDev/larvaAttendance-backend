@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 //middleware function to decode token
-export const ensureAuthenticated = async (req,res,next) =>{ 
+export const ensureAuthenticated = (req,res,next) =>{ 
     const accessToken = req.cookies.accessToken
     try {
         const decodedToken = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
@@ -11,3 +11,4 @@ export const ensureAuthenticated = async (req,res,next) =>{
         return res.status(401).json({ msg: 'Unauthorized' })
     }
 }
+
