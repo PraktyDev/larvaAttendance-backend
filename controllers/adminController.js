@@ -44,42 +44,26 @@ export const login = async (req, res) =>{
             { subject: 'accessApi', expiresIn: process.env.TOKEN_EXPIRATION }
         )
 
-        // res.cookie('accessToken', accessToken, { maxAge: 60000 })
-        if (process.env.NODE_ENV === 'production'){
-            res.cookie('accessToken', accessToken, { maxAge: 3600000, httpOnly: true, secure: true, sameSite: 'Strict' })
-            return res.status(200).json({
-                id: admin._id,
-                name: admin.name,
-                email: admin.email,
-                login: true
-            })
-        }
+        return res.status(200).json({ msg: 'Login successful', accessToken});
     } catch (error) {
         return res.status(500).json({ msg: error.message })
     }
 }
 
-//ADMIN LOGOUT
-export const logout = (req, res) => {
-    try {
-        res.clearCookie('accessToken');
-        res.clearCookie('refreshToken');
-        return res.status(200).json({ msg: "Logout successful" });
-    } catch (error) {
-        return res.status(500).json({ msg: "Logout failed", error: error.message });
-    }
-};
-
 //Admin Auth Status
 export const authStatus = async (req,res)=>{
     try {
         if (!req.user) {
-            return res.status(401).json({ Authenticate: false, msg: "Invalid Token" });
+            return res.status(401).json({ msg: "Invalid Token" });
         }
+
         const admin = await Admin.findOne({ _id: req.user.id })
-        return admin
-            ? res.status(200).json({ Authenticate: true, id: admin._id, name: admin.name})
-            : res.status(401).json({ Authenticate: false, msg: "You are not Authenticated" })
+
+        if (!admin) {
+            return res.status(404).json({ msg: "Admin not found" });
+        }
+
+        return res.status(200).json({ id: admin._id, name: admin.name});
     } catch (error) {
         return res.status(500).json({ msg: "Server Error", error: error.message });
     }

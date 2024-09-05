@@ -43,47 +43,27 @@ export const login = async (req, res) =>{
             process.env.JWT_ACCESS_SECRET,
             { subject: 'accessApi', expiresIn: process.env.TOKEN_EXPIRATION }
         )
-        
-        // res.cookie('accessToken', accessToken, { maxAge: 60000 })
-        if (process.env.NODE_ENV === 'production'){
-            res.cookie('accessToken', accessToken, { maxAge: 3600000, httpOnly: true, secure: true, sameSite: 'Strict' })
-            return res.status(200).json({
-                id: tutor._id,
-                name: tutor.name,
-                email: tutor.email,
-                login: true
-            })
-        }
+    
+        return res.status(200).json({ msg: 'Login successful', accessToken});
     } catch (error) {
         return res.status(500).json({ msg: error.message })
     }
 }
 
-//TUTOR LOGOUT
-export const logout = (req, res) => {
-    try {
-        res.clearCookie('accessToken');
-        res.clearCookie('refreshToken');
-        return res.status(200).json({ msg: "Logout successful" });
-    } catch (error) {
-        return res.status(500).json({ msg: "Logout failed", error: error.message });
-    }
-};
-
 //Tutor Auth Status
 export const authStatus = async (req,res)=>{
     try {
         if (!req.user) {
-            return res.status(401).json({ Authenticate: false, msg: "Invalid Token" });
+            return res.status(401).json({ msg: "Invalid Token" });
         }
 
         const tutor = await Tutor.findOne({ _id: req.user.id })
 
         if (!tutor) {
-            return res.status(404).json({ Authenticate: false, msg: "Tutor not found" });
+            return res.status(404).json({ msg: "Tutor not found" });
         }
 
-        return res.status(200).json({ Authenticate: true, id: tutor._id, name: tutor.name, course: tutor.course });
+        return res.status(200).json({ id: tutor._id, name: tutor.name, course: tutor.course });
     } catch (error) {
         return res.status(500).json({ msg: "Server Error", error: error.message });
     }

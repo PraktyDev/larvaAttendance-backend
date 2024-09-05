@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ensureAuthenticated } from '../utils/authMiddleware.js';
-import { authStatus, deleteTutor, login, logout, register, tutor, tutors, updatePw, updateTutor } from '../controllers/tutorController.js';
+import { authStatus, deleteTutor, login, register, tutor, tutors, updatePw, updateTutor } from '../controllers/tutorController.js';
 
 const router = Router();
 
@@ -9,7 +9,6 @@ router.post('/tutor/register', register)
 router.post('/tutor/login', login)
 //READ OPERATION
 router.get('/tutor/auth/status', ensureAuthenticated, authStatus)
-router.get('/tutor/logout', logout)
 router.get('/tutors', tutors)
 router.get('/tutor/:id', tutor)
 //UPDATE OPERATION

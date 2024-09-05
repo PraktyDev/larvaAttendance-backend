@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { admin, admins, authStatus, deleteAdmin, login, logout, register, updateAdmin } from '../controllers/adminController.js';
+import { admin, admins, authStatus, deleteAdmin, login, register, updateAdmin } from '../controllers/adminController.js';
 import { ensureAuthenticated } from '../utils/authMiddleware.js';
 
 const router = Router();
@@ -9,7 +9,6 @@ router.post('/admin/register', register)
 router.post('/admin/login', login)
 //READ OPERATION
 router.get('/admin/auth/status', ensureAuthenticated, authStatus)
-router.get('/admin/logout', logout)
 router.get('/admins', admins)
 router.get('/admin/:id', admin)
 //UPDATE OPERATION
