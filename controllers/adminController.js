@@ -63,7 +63,7 @@ export const authStatus = async (req,res)=>{
             return res.status(404).json({ msg: "Admin not found" });
         }
 
-        return res.status(200).json({ id: admin._id, name: admin.name});
+        return res.status(200).json({ id: admin._id, name: admin.name, post: admin.post, email: admin.email });
     } catch (error) {
         return res.status(500).json({ msg: "Server Error", error: error.message });
     }
